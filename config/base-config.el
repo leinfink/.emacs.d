@@ -51,7 +51,10 @@
 
 (use-package undo-tree
   :defer 3
-  :config (global-undo-tree-mode 1))
+  :config
+  (setq undo-tree-history-directory-alist
+        `(("." . ,(concat user-emacs-directory "undo-tree"))))
+  (global-undo-tree-mode 1))
 
 (use-package which-key
   :defer 2

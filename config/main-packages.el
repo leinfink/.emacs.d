@@ -32,3 +32,7 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
 
 (use-package treemacs-magit
   :after (treemacs magit))
+
+(use-package treemacs-icons-dired
+  :after (treemacs)
+  :config (treemacs-icon-dired-mode 1))
