@@ -48,21 +48,25 @@
             (scroll-bar-mode -1) ; somehow this is necessary, and only for scroll-bar..
             (message ""))) ; clear echo area
 
-;; minibuffer completion
+;;; minibuffer completions
 ;; very simple this time: no helm, no ivy, not even ido
-(icomplete-mode 1)
-(icomplete-vertical-mode 1)
-(fido-mode 1)
+(fido-vertical-mode 1)
+; (setq completion-styles '(basic partial-completion emacs22))
+; (setq completion-cycle-threshold 10)
 
+;;; in-buffer completions
 (use-package company
   :defer 3
   :config (global-company-mode 1))
+
+;;; more tweaks
 
 (use-package undo-tree
   :defer 3
   :config
   (setq undo-tree-history-directory-alist
         `(("." . ,(concat user-emacs-directory "undo-tree"))))
+  (setq undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode 1))
 
 (use-package which-key
