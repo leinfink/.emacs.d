@@ -1,5 +1,4 @@
 (use-package smart-hungry-delete
-  :ensure t
   :bind
   (:map prog-mode-map
         ([remap backward-delete-char-untabify] . smart-hungry-delete-backward-char)
@@ -10,6 +9,9 @@
 (use-package rainbow-delimiters
   :commands rainbow-delimiters-mode
   :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package ws-butler
+  :hook (prog-mode . ws-butler-mode))
 
 ; not tried yet
 ; (use-package smartparens)
