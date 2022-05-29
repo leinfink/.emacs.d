@@ -26,9 +26,12 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
               :filter-return #'~/magit-process-environment))
 
 (use-package treemacs
-  :bind (("C-c C-t" . treemacs))
+  :bind (("C-c C-t" . treemacs)
+         ("C-x j" . treemacs-select-window))
+  :init (setq treemacs-width 25)
   :config
-  (doom-themes-treemacs-config))
+  (doom-themes-treemacs-config)
+  (treemacs-hide-gitignored-files-mode t))
 
 (use-package treemacs-magit
   :after (treemacs magit))

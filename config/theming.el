@@ -31,7 +31,7 @@
   :config
   (setq doom-themes-enable-bold nil
         doom-themes-enable-italic t
-        doom-themes-treemacs-theme "doom-atom") ; alt: "doom-atom"
+        doom-themes-treemacs-theme "doom-colors") ; alt: "doom-atom"
   ; doom-themes-org-config moved to use-package org-mode
   ; doom-themes-treemacs-config moved to use-package treemacs
   (doom-themes-visual-bell-config)
