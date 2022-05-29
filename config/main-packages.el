@@ -35,4 +35,4 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
 
 (use-package treemacs-icons-dired
   :after (treemacs)
-  :config (treemacs-icon-dired-mode 1))
+  :config (treemacs-icons-dired-mode 1))

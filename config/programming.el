@@ -13,6 +13,8 @@
 (use-package ws-butler
   :hook (prog-mode . ws-butler-mode))
 
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
 ; not tried yet
 ; (use-package smartparens)
 

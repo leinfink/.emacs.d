@@ -35,6 +35,9 @@
       use-package-compute-statistics t
       straight-use-package-by-default t)
 
+(if (daemonp)
+    (setq use-package-always-demand t))
+
 ;; load my own configs with keybinds to open the file
 (defvar config-directory (concat user-emacs-directory "config/"))
 (defun load-config (filename &optional kbd-key)

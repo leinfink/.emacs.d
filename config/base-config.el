@@ -26,12 +26,21 @@
 (setq disabled-command-function nil)
 (setq server-client-instructions nil)
 
+; I never work in arabic or other r-to-l scripts, so can do this
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;; Avoid performance issues in files with very long lines.
+(global-so-long-mode 1)
+
 (use-package esup
   :commands esup)
 
 ;;; Basic Tweaks
 
 (column-number-mode 1)
+(global-hl-line-mode 1)
+
 (winner-mode 1)
 
 (add-hook 'after-make-frame-functions
@@ -80,3 +89,14 @@
       require-final-newline t
       sentence-end-double-space nil
       ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;; by Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+(defun unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max))
+        ;; This would override `fill-column' if it's an integer.
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil region)))
+
+(define-key global-map "\M-Q" 'unfill-paragraph)
