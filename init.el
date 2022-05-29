@@ -6,6 +6,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (horizontal-scroll-bar-mode -1)
+(setq initial-scratch-message "")
 
 ;; straight.el package manager
 (defvar bootstrap-version)
@@ -39,26 +40,6 @@
                                          (find-file file))))))
 
 (load-config "theming")
-
-(use-package dashboard
-  :demand t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-  (setq dashboard-banner-logo-title "GNU Emacs"
-        dashboard-startup-banner 'logo
-        dashboard-center-content t
-        dashboard-show-shortcuts t
-        dashboard-set-footer nil
-        dashboard-set-init-info t
-        dashboard-set-heading-icons t
-        dashboard-set-file-icons nil
-        dashboard-set-navigator nil
-        dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (agenda . 5))))
-
-
 (load-config "base-config" "C-c b")
 (load-config "main-packages" "C-c m")
 (load-config "programming")
