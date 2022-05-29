@@ -26,7 +26,9 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
               :filter-return #'~/magit-process-environment))
 
 (use-package treemacs
-  :bind (("C-c C-t" . treemacs)))
+  :bind (("C-c C-t" . treemacs))
+  :config
+  (doom-themes-treemacs-config))
 
 (use-package treemacs-magit
   :after (treemacs magit))

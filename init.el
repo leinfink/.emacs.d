@@ -1,12 +1,18 @@
 ;; -*- lexical-binding: t -*-
 
-;; hide stuff early, so it doesnt flash
-;; menu-bar is already disabled in early-init.el
-(setq inhibit-startup-screen t)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(horizontal-scroll-bar-mode -1)
-(setq initial-scratch-message "")
+;; Make startup faster by reducing the frequency of garbage
+;; collection.  The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+(defun measure-startup-time ()
+  (message "Emacs ready in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                    (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+; enable only when I want to check
+(add-hook 'emacs-startup-hook #'measure-startup-time)
 
 ;; straight.el package manager
 (defvar bootstrap-version)
@@ -25,7 +31,7 @@
 
 ;; enable use-package
 (straight-use-package 'use-package)
-(setq use-package-verbose t
+(setq use-package-verbose nil
       use-package-compute-statistics t
       straight-use-package-by-default t)
 
@@ -43,11 +49,16 @@
 (load-config "base-config" "C-c b")
 (load-config "main-packages" "C-c m")
 (load-config "programming")
+(load-config "org-mode")
 
 (global-set-key (kbd "C-c C-g") (lambda () (interactive)
                                   (ido-find-file-in-dir config-directory)))
 
 ;; make emacs customizations tool write its thing somewhere else
-;; even though I probably will use use-package :custom instead
 (setq custom-file "~/.emacs.d/config/customize.el")
-(load custom-file)
+;; but I wont use this anyway, so no need to load
+;; can use use-package :custom instead
+;; (load custom-file)
+
+;; Make gc pauses faster by decreasing the threshold again.
+(setq gc-cons-threshold (* 2 1000 1000))
