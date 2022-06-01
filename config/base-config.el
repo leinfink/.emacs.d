@@ -39,7 +39,9 @@
 ;;; Basic Tweaks
 
 (column-number-mode 1)
-(global-hl-line-mode 1)
+
+(add-hook 'prog-mode-hook #'hl-line-mode)
+(add-hook 'text-mode-hook #'hl-line-mode)
 
 (winner-mode 1)
 
@@ -58,6 +60,22 @@
 (use-package company
   :defer 3
   :config (global-company-mode 1))
+
+;;; dired etc
+
+(setq dired-switches-in-mode-line 'as-is
+      dired-isearch-filenames 'dwim
+      delete-by-moving-to-trash t)
+
+(use-package dired-x
+  :disabled
+  :after (dired)
+  :straight (:type built-in))
+
+;; shells, terms...
+(use-package vterm
+  :commands vterm
+  :config (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
 ;;; more tweaks
 

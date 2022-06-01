@@ -38,4 +38,9 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
 
 (use-package treemacs-icons-dired
   :after (treemacs)
-  :config (treemacs-icons-dired-mode 1))
+  :config
+  (setq treemacs-icons-dired--ranger-adjust t) ; fixes first lines in dired with -ls
+  (treemacs-icons-dired-mode 1))
+
+(use-package pdf-tools
+  :commands (pdf-tools))

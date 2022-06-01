@@ -9,3 +9,7 @@
 
 (use-package visual-fill-column
   :hook (org-mode . visual-fill-column-mode))
+
+(use-package org-pomodoro
+  :after (org)
+  :commands org-pomodoro)
