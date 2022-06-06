@@ -48,20 +48,21 @@
          (global-set-key (kbd kbd-key) (lambda () (interactive)
                                          (find-file file))))))
 
+(load-config "locals")
 (load-config "theming")
 (load-config "base-config" "C-c b")
 (load-config "main-packages" "C-c m")
 (load-config "programming")
 (load-config "org-mode")
+(load-config "org-roam")
 
 (global-set-key (kbd "C-c C-g") (lambda () (interactive)
                                   (ido-find-file-in-dir config-directory)))
 
 ;; make emacs customizations tool write its thing somewhere else
 (setq custom-file "~/.emacs.d/config/customize.el")
-;; but I wont use this anyway, so no need to load
-;; can use use-package :custom instead
-;; (load custom-file)
+;; but I wont use this anyway, can use use-package :custom instead
+; (load custom-file)
 
 ;; Make gc pauses faster by decreasing the threshold again.
 (setq gc-cons-threshold (* 2 1000 1000))
