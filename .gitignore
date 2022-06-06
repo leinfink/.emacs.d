@@ -8,6 +8,8 @@
 /old/
 /places
 /recentf
-/straight/
+/straight/build/
+/straight/repos/
+/straight/build-cache.el
 /transient/
 /undo-tree/
