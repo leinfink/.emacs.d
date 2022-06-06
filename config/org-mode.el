@@ -1,15 +1,16 @@
 (use-package org
   :straight (:type built-in)
-  :commands org-mode
   :custom-face
   (variable-pitch ((t (:font "Fira Sans-10"))))
   (fixed-pitch ((t (:font "Fira Code-10"))))
   (org-block ((t (:inherit fixed-pitch))))
   (org-indent ((t (:inherit (org-hide fixed-pitch)))))
   (org-tag ((t (:inherit fixed-pitch :height 0.9))))
+
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture))
+
   :config
   (doom-themes-org-config)
   (add-hook 'org-mode-hook #'variable-pitch-mode)
@@ -18,6 +19,7 @@
             (lambda () (imenu-add-to-menubar "Imenu")))
   (add-hook 'org-mode-hook
             (lambda () (setq fill-column 90)))
+
   :custom
   (org-agenda-files (list org-directory))
   (org-catch-invisible-edits t)
@@ -40,12 +42,11 @@
 :END:")))
   (org-clock-persist 'history)
   (org-clock-persistence-insinuate)
-  (org-clock-idle-time 15))
+  (org-clock-idle-time 15)
+  (org-contacts-files (list (concat org-directory "contacts.org"))))
 
 ;;; org modules
-(use-package org-contrib
-  :straight (:includes org-contacts)
-  :after (org))
+(use-package org-contacts)
 
 (use-package org-protocol
   :straight (:type built-in)
@@ -54,11 +55,6 @@
 (use-package org-pomodoro
   :after (org)
   :commands org-pomodoro)
-
-(use-package org-contacts
-  :after (org)
-  :commands org-contacts
-  :custom (org-contacts-files (list (concat org-directory "contacts.org"))))
 
 (use-package org-noter
   :after (org pdf-tools)
