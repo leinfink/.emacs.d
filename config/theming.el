@@ -37,7 +37,9 @@
   (doom-themes-visual-bell-config)
   (load-theme 'doom-one t)
   (custom-set-faces
-   `(magit-header-line ((t(:background ,(doom-color 'bg) :box nil))))))
+   `(magit-header-line ((t (:background ,(doom-color 'bg)
+                                        :box nil
+                                        :height 100))))))
 
 (use-package doom-modeline
   :demand t

@@ -9,9 +9,14 @@
 
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
-
+         ("C-c c" . org-capture)
+         :map org-mode-map
+         ("M-n" . org-do-demote)
+         ("M-p" . org-do-promote)
+         ("M-N" . org-demote-subtree)
+         ("M-P" . org-promote-subtree))
   :config
+  (require 'org-contacts)
   (doom-themes-org-config)
   (add-hook 'org-mode-hook #'variable-pitch-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
@@ -19,7 +24,7 @@
             (lambda () (imenu-add-to-menubar "Imenu")))
   (add-hook 'org-mode-hook
             (lambda () (setq fill-column 90)))
-
+  (add-hook 'org-mode-hook #'org-indent-mode)
   :custom
   (org-agenda-files (list org-directory))
   (org-catch-invisible-edits t)
@@ -46,8 +51,6 @@
   (org-contacts-files (list (concat org-directory "contacts.org"))))
 
 ;;; org modules
-(use-package org-contacts)
-
 (use-package org-protocol
   :straight (:type built-in)
   :after (org))

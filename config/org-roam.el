@@ -22,6 +22,4 @@
             #'org-roam-reflinks-section
             ;; #'org-roam-unlinked-references-section
             ))
-
-
-  )
+  (set-face-attribute 'org-roam-header-line nil :height 100))

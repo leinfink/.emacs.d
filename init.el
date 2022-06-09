@@ -59,6 +59,9 @@
 (global-set-key (kbd "C-c C-g") (lambda () (interactive)
                                   (ido-find-file-in-dir config-directory)))
 
+(global-set-key (kbd "C-c i") (lambda () (interactive)
+                                (ido-find-file-in-dir org-directory)))
+
 ;; make emacs customizations tool write its thing somewhere else
 (setq custom-file "~/.emacs.d/config/customize.el")
 ;; but I wont use this anyway, can use use-package :custom instead
