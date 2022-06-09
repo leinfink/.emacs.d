@@ -16,7 +16,6 @@
          ("M-N" . org-demote-subtree)
          ("M-P" . org-promote-subtree))
   :config
-  (require 'org-contacts)
   (doom-themes-org-config)
   (add-hook 'org-mode-hook #'variable-pitch-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
@@ -51,6 +50,11 @@
   (org-contacts-files (list (concat org-directory "contacts.org"))))
 
 ;;; org modules
+
+(use-package org-contacts
+  :straight (:host nil :type git :repo "https://repo.or.cz/org-contacts.git")
+  :after (org))
+
 (use-package org-protocol
   :straight (:type built-in)
   :after (org))

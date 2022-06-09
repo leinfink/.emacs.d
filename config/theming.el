@@ -47,7 +47,8 @@
   :config
   (setq doom-modeline-hud t ; shows current position in buffer
         doom-modeline-buffer-modification-icon nil
-        doom-modeline-icon t)
+        doom-modeline-icon t
+        doom-modeline-unicode-fallback nil)
   (doom-modeline-mode 1))
 
 (use-package solaire-mode

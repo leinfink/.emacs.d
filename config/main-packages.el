@@ -25,6 +25,10 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
   (advice-add 'magit-process-environment
               :filter-return #'~/magit-process-environment))
 
+(use-package forge
+  :after (magit)
+  :custom (forge-owned-accounts '(("leinfink". nil))))
+
 (use-package treemacs
   :bind (("C-c C-t" . treemacs)
          ("C-x j" . treemacs-select-window))

@@ -15,6 +15,9 @@
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
+(use-package xr
+  :defer 4)
+
 ; not tried yet
 ; (use-package smartparens)
 

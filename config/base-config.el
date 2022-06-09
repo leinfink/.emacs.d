@@ -58,6 +58,7 @@
 
 ;;; in-buffer completions
 (use-package company
+  :straight (:type git :host github :repo "company-mode/company-mode")
   :defer 3
   :config (global-company-mode 1))
 
