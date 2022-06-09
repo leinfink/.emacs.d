@@ -67,6 +67,19 @@
       dired-isearch-filenames 'dwim
       delete-by-moving-to-trash t)
 
+(defun leinfink/dired-current-dir-la ()
+  "dired in current directory with -la option"
+    (interactive)
+    (dired (file-name-directory buffer-file-name) "-la"))
+
+(defun leinfink/dired-current-dir-ls ()
+  "dired in current directory with -ls option"
+  (interactive)
+  (dired (file-name-directory buffer-file-name) "-ls"))
+
+(global-set-key (kbd "C-x C-d") #'leinfink/dired-current-dir-la)
+(global-set-key (kbd "C-x C-l") #'leinfink/dired-current-dir-ls)
+
 (use-package dired-x
   :disabled
   :after (dired)
