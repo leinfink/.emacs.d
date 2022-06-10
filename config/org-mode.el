@@ -44,6 +44,7 @@
 :ADDRESS:
 :BIRTHDAY: %^{yyyy-mm-dd}
 :END:")))
+  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (org-clock-persist 'history)
   (org-clock-persistence-insinuate)
   (org-clock-idle-time 15)

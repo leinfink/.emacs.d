@@ -8,9 +8,13 @@
 
 ; (use-package workgroups2) ; tested yet
 
+;;; magit and related packages
+
 (use-package magit
   :defer t
+  :straight (:includes magit-wip)
   :config
+  (magit-wip-mode 1)
   (defun ~/magit-process-environment (env)
     "Add GIT_DIR and GIT_WORK_TREE to ENV when in a special directory.
 In my case, .dotfiles as GIT_DIR and $HOME as GIT_WORK_TREE, when in $HOME.
@@ -28,6 +32,8 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
 (use-package forge
   :after (magit)
   :custom (forge-owned-accounts '(("leinfink". nil))))
+
+;;; treemacs
 
 (use-package treemacs
   :bind (("C-c C-t" . treemacs)
@@ -48,3 +54,15 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
 
 (use-package pdf-tools
   :commands (pdf-tools))
+
+(use-package notmuch
+  :bind (("C-c m" . notmuch))
+  :custom
+  (notmuch-hello-sections
+   '(; notmuch-hello-insert-header
+     notmuch-hello-insert-saved-searches
+     notmuch-hello-insert-search
+     notmuch-hello-insert-recent-searches
+     notmuch-hello-insert-alltags
+     notmuch-hello-insert-footer))
+  (notmuch-show-header-line nil))

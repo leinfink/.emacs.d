@@ -50,8 +50,8 @@
 
 (load-config "locals")
 (load-config "theming")
-(load-config "base-config" "C-c b")
-(load-config "main-packages" "C-c m")
+(load-config "base-config")
+(load-config "main-packages")
 (load-config "programming")
 (load-config "org-mode")
 (load-config "org-roam")
