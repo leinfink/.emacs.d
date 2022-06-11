@@ -36,12 +36,8 @@
   ; doom-themes-treemacs-config moved to use-package treemacs
   (doom-themes-visual-bell-config)
   (load-theme 'doom-one t)
-   (if (not (daemonp)) (load-theme 'doom-one t)
-     (add-hook 'server-after-make-frame-hook
-             #'(lambda () (load-theme 'doom-one t))))
   (custom-set-faces
-   `(magit-header-line ((t (
-                                        :height 40))))))
+   `(magit-header-line ((t (:background ,(doom-color 'bg) :height 100))))))
 
 (use-package doom-modeline
   :demand t
@@ -57,14 +53,6 @@
   :hook
   (text-mode . mixed-pitch-mode)
   (text-mode . visual-line-mode))
-
-(use-package solaire-mode
-  :straight (:host github :repo "hlissner/emacs-solaire-mode"
-                   :branch "master")
-  :after (doom-themes)
-  :config
-  (solaire-global-mode 1)
-  (add-hook 'solaire-mode-hook #'make-header-border))
 
 (use-package all-the-icons
   :if (or (display-graphic-p) (daemonp))) ; use M-x all-the-icons-install-fonts to install required fonts

@@ -36,7 +36,7 @@
       straight-use-package-by-default t)
 
 (if (daemonp)
-    (setq use-package-always-demand t))
+ (setq use-package-always-demand t))
 
 ;; load my own configs with keybinds to open the file
 (defvar config-directory (concat user-emacs-directory "config/"))

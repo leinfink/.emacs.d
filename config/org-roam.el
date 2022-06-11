@@ -9,16 +9,24 @@
   :config
   (org-roam-db-autosync-mode)
 
+  ;; (add-to-list 'display-buffer-alist
+  ;;            '("\\*org-roam\\*"
+  ;;              (display-buffer-in-direction)
+  ;;              (direction . right)
+  ;;              (window-width . 0.33)
+  ;;              (window-height . fit-window-to-buffer)))
+
   (add-to-list 'display-buffer-alist
                '("\\*org-roam\\*"
                  (display-buffer-in-side-window)
                  (side . right)
                  (slot . 0)
-                 (window-width . 0.25)
+                 (window-width . 0.33)
                  (window-parameters . ((no-other-window . t)
                                        (no-delete-other-windows . t)))))
 
   (defun leinfink/select-persistent-org-roam-buffer ()
+    (interactive)
     (select-window (get-buffer-window org-roam-buffer)))
 
   (global-set-key (kbd "C-c n p") #'leinfink/select-persistent-org-roam-buffer)
@@ -35,7 +43,25 @@
             ))
 
   (set-face-attribute 'org-roam-header-line nil :height 100)
-  (add-hook 'org-roam-mode-hook #'variable-pitch-mode)
-  (add-hook 'org-roam-mode-hook #'visual-line-mode)
+  (add-hook 'org-roam-buffer-postrender-functions #'mixed-pitch-mode)
+  (add-hook 'org-roam-buffer-postrender-functions #'visual-line-mode)
+
 
   (setq org-roam-completion-everywhere t))
+
+(use-package org-roam-bibtex
+  :after org-roam
+  :config
+  (setq bibtex-completion-bibliography org-cite-global-bibliography))
+
+(use-package org-roam-ui
+  :straight
+  (:host github :repo "org-roam/org-roam-ui" :branch "main"
+         :files ("*.el" "out"))
+    :after org-roam
+    :commands (org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
