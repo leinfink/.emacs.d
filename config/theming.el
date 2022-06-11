@@ -26,6 +26,8 @@
      "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
   (ligature-mode))
 
+(defvar night t)
+
 (use-package doom-themes
   :demand t
   :config
@@ -35,15 +37,26 @@
   ; doom-themes-org-config moved to use-package org-mode
   ; doom-themes-treemacs-config moved to use-package treemacs
   (doom-themes-visual-bell-config)
-  (load-theme 'doom-one t)
+  (load-theme (if night 'doom-one 'doom-one-light) t)
   (custom-set-faces
-   `(magit-header-line ((t (:background ,(doom-color 'bg) :height 100))))))
+   `(magit-header-line ((t (:background ,(doom-color 'bg) :box nil :height 100))))))
+
+(defun toggle-night ()
+  (interactive)
+  (setq night (not night))
+  (if night (load-theme 'doom-one t)
+    (load-theme 'doom-one-light t))
+  (setq doom-modeline-hud night)
+  (set-face-attribute 'header-line nil :background (doom-color 'bg))
+  (set-face-attribute 'header-line nil :height 40)
+  (set-face-attribute 'org-roam-header-line nil :height 100))
+
 
 (use-package doom-modeline
   :demand t
   :hook (text-mode . (lambda () (setq doom-modeline-enable-word-count t)))
   :config
-  (setq doom-modeline-hud t ; shows current position in buffer
+  (setq doom-modeline-hud night ; doesnt work nicely with doom-one-light
         doom-modeline-buffer-modification-icon nil
         doom-modeline-icon t
         doom-modeline-unicode-fallback nil)

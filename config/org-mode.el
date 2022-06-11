@@ -20,7 +20,7 @@
   (add-hook 'org-mode-hook
             (lambda () (imenu-add-to-menubar "Imenu")))
   (add-hook 'org-mode-hook
-            (lambda () (setq fill-column 90)))
+            (lambda () (setq fill-column 75)))
   (add-hook 'org-mode-hook #'org-indent-mode)
   :custom
   (org-agenda-files (list org-directory))
