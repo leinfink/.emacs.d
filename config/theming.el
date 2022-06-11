@@ -1,7 +1,7 @@
 (defun make-header-border ()
   (set-default 'header-line-format "")
-  (set-face-attribute 'header-line nil :inherit 'default)
-  (set-face-attribute 'header-line nil :height 50))
+  (set-face-attribute 'header-line nil :background (doom-color 'bg))
+  (set-face-attribute 'header-line nil :height 40))
 
 (add-hook 'window-setup-hook #'make-header-border)
 (setq default-frame-alist '((font . "Fira Code-10")))
@@ -36,10 +36,12 @@
   ; doom-themes-treemacs-config moved to use-package treemacs
   (doom-themes-visual-bell-config)
   (load-theme 'doom-one t)
+   (if (not (daemonp)) (load-theme 'doom-one t)
+     (add-hook 'server-after-make-frame-hook
+             #'(lambda () (load-theme 'doom-one t))))
   (custom-set-faces
-   `(magit-header-line ((t (:background ,(doom-color 'bg)
-                                        :box nil
-                                        :height 100))))))
+   `(magit-header-line ((t (
+                                        :height 40))))))
 
 (use-package doom-modeline
   :demand t
@@ -51,9 +53,18 @@
         doom-modeline-unicode-fallback nil)
   (doom-modeline-mode 1))
 
+(use-package mixed-pitch
+  :hook
+  (text-mode . mixed-pitch-mode)
+  (text-mode . visual-line-mode))
+
 (use-package solaire-mode
-  :after (treemacs)
-  :config (solaire-global-mode 1))
+  :straight (:host github :repo "hlissner/emacs-solaire-mode"
+                   :branch "master")
+  :after (doom-themes)
+  :config
+  (solaire-global-mode 1)
+  (add-hook 'solaire-mode-hook #'make-header-border))
 
 (use-package all-the-icons
   :if (or (display-graphic-p) (daemonp))) ; use M-x all-the-icons-install-fonts to install required fonts
