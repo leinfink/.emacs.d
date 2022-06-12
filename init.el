@@ -51,6 +51,7 @@
 (load-config "locals")
 (load-config "theming")
 (load-config "base-config")
+(load-config "completion")
 (load-config "main-packages")
 (load-config "programming")
 (load-config "org-mode")

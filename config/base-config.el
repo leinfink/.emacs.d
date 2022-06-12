@@ -44,23 +44,16 @@
 (add-hook 'text-mode-hook #'hl-line-mode)
 
 (winner-mode 1)
+(setq winner-dont-bind-my-keys t)
+(global-set-key (kbd "C-c k") 'winner-undo)
+(global-set-key (kbd "C-c j") 'winner-redo)
+
 
 (add-hook 'after-make-frame-functions
-          (lambda (_)                                        
-            (scroll-bar-mode -1) ; somehow this is necessary, and only for scroll-bar..
+          (lambda (_)
+            ; somehow this is necessary, and only for scroll-bar..
+            (scroll-bar-mode -1)
             (message ""))) ; clear echo area
-
-;;; minibuffer completions
-;; very simple this time: no helm, no ivy, not even ido
-(fido-vertical-mode 1)
-; (setq completion-styles '(basic partial-completion emacs22))
-; (setq completion-cycle-threshold 10)
-
-;;; in-buffer completions
-(use-package company
-  :straight (:type git :host github :repo "company-mode/company-mode")
-  :defer 3
-  :config (global-company-mode 1))
 
 ;;; dired etc
 
