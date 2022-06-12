@@ -41,11 +41,27 @@
   (custom-set-faces
    `(magit-header-line ((t (:background ,(doom-color 'bg) :box nil :height 100))))))
 
-(defun toggle-night ()
+(defun lf/toggle-night ()
+  "Leinfink's toggle between dark and light mode."
   (interactive)
   (setq night (not night))
-  (if night (load-theme 'doom-one t)
-    (load-theme 'doom-one-light t))
+  (cond (night
+         (load-theme 'doom-one t)
+         (copy-file "~/.config/gtk-3.0/settings-dark.ini"
+                    "~/.config/gtk-3.0/settings.ini" t)
+         (copy-file "~/.config/waybar/style-dark.css"
+                    "~/.config/waybar/style.css" t)
+         (copy-file "~/.config/foot/foot-dark.ini"
+                    "~/.config/foot/foot.ini" t))
+         (t
+          (load-theme 'doom-one-light t)
+          (copy-file "~/.config/gtk-3.0/settings-light.ini"
+                     "~/.config/gtk-3.0/settings.ini" t)
+          (copy-file "~/.config/waybar/style-light.css"
+                     "~/.config/waybar/style.css" t)
+          (copy-file "~/.config/foot/foot-light.ini"
+                     "~/.config/foot/foot.ini" t)))
+  (start-process "restart-waybar" nil "killall" "-SIGUSR2" "waybar")
   (setq doom-modeline-hud night)
   (set-face-attribute 'header-line nil :background (doom-color 'bg))
   (set-face-attribute 'header-line nil :height 40)
