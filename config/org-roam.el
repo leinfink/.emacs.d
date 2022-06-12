@@ -11,6 +11,17 @@
   :config
   (org-roam-db-autosync-mode)
 
+  (setq org-roam-capture-templates
+        '(("d" "default" plain "%?"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+           :unnarrowed t)
+          ("r" "bibliography reference" plain "%?"
+           :target
+           (file+head "references/${citekey}.org" "#+title: ${author} (${year}). ${title}")
+           :unnarrowed t
+           :immediate-finish t)))
+
+
   (add-to-list 'display-buffer-alist
              '("\\*org-roam\\*"
                (display-buffer-in-direction)
@@ -27,7 +38,8 @@
   ;;                (window-parameters . ((no-other-window . t)
   ;;                                      (no-delete-other-windows . t)))))
 
-  (defun leinfink/select-persistent-org-roam-buffer ()
+  (defun lf/select-persistent-org-roam-buffer ()
+    "Leinfink's select the persistent org-roam-buffer."
     (interactive)
     (select-window (get-buffer-window org-roam-buffer)))
 
@@ -49,25 +61,45 @@
   (add-hook 'org-roam-buffer-postrender-functions #'mixed-pitch-mode)
   (add-hook 'org-roam-buffer-postrender-functions #'visual-line-mode)
 
+  ;; start with collapsed sections
+  (add-hook 'org-roam-buffer-postrender-functions
+            #'magit-section-show-level-2)
 
   (setq org-roam-completion-everywhere t))
 
+
 (use-package org-roam-bibtex
   :after org-roam
+  :custom
+  (orb-roam-ref-format 'org-cite)
+  (bibtex-completion-bibliography org-cite-global-bibliography)
   :config
-  (setq bibtex-completion-bibliography org-cite-global-bibliography))
+  (add-to-list 'orb-preformat-keywords "year"))
 
 (use-package citar
   :bind (("C-c b" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
+
   :custom
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
-  :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
+  (citar-notes-paths (list (concat org-roam-directory "references/")))
+  (citar-symbols
+   `((file,(all-the-icons-faicon "file-o"
+                                 :face 'all-the-icons-green
+                                 :v-adjust -0.1) . " ")
+     (note ,(all-the-icons-material "speaker_notes"
+                                    :face 'all-the-icons-blue
+                                    :v-adjust -0.3) . " ")
+     (link ,(all-the-icons-octicon "link"
+                                   :face 'all-the-icons-orange
+                                   :v-adjust 0.01) . " ")))
+  (citar-symbol-separator "  ")
+  (citar-open-note-functions '(orb-citar-edit-note)))
+
 
 (use-package org-roam-ui
   :straight
