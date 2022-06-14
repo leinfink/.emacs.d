@@ -15,16 +15,21 @@
          ("M-p" . org-do-promote)
          ("M-N" . org-demote-subtree)
          ("M-P" . org-promote-subtree))
+
   :config
   (doom-themes-org-config)
-  (add-hook 'org-mode-hook
-            (lambda () (imenu-add-to-menubar "Imenu")))
-  (add-hook 'org-mode-hook
-            (lambda () (setq fill-column 75)))
-  (add-hook 'org-mode-hook #'org-indent-mode)
+  (add-hook 'org-mode-hook (lambda ()
+                             (imenu-add-to-menubar "Imenu")
+                             (lf/setup-org-theming)))
+
   :custom
-  (org-agenda-files (list org-directory))
   (org-catch-invisible-edits t)
+  (org-agenda-files (list org-directory))
+  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
+  (org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (org-clock-idle-time 15)
+  (org-contacts-files (list (concat org-directory "contacts.org")))
   (org-todo-keywords '((sequence "TODO(t)" "STARTED" "CURRENT" "WAITING(@/!)"
                                  "|" "DONE(d!)" "CANCELED(c@)")))
   (org-tag-alist '(("@home" . ?h) ("@academic" . ?a) ("@job" . ?w)))
@@ -41,12 +46,7 @@
 :NOTE:
 :ADDRESS:
 :BIRTHDAY: %^{yyyy-mm-dd}
-:END:")))
-  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
-  (org-clock-persist 'history)
-  (org-clock-persistence-insinuate)
-  (org-clock-idle-time 15)
-  (org-contacts-files (list (concat org-directory "contacts.org"))))
+:END:"))))
 
 ;;; org modules
 
@@ -68,8 +68,47 @@
 
 ;;; visual stuff
 
-(use-package visual-fill-column
-  :hook (visual-line-mode . visual-fill-column-mode))
+(defun lf/setup-org-theming ()
+  (setq org-hide-emphasis-markers t
+        fill-column 72
+        org-hidden-keywords '(title)
+        line-spacing 0.1
+        org-pretty-entities t)
+
+  (setq org-hide-block-startup t
+      org-startup-folded "fold")
+
+  (set-face-attribute 'org-level-8 nil :weight 'normal :inherit 'default)
+
+  (set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
+  (set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
+
+  (set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.1) ;\large
+  (set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.2) ;\Large
+  (set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.4) ;\LARGE
+
+  (setq org-cycle-level-faces nil)
+  (setq org-n-level-faces 4)
+
+  (set-face-attribute 'org-document-title nil
+                      :height 1.6
+                      :weight 'semi-bold
+                      :foreground 'unspecified
+                      :inherit 'org-level-8))
+
+(use-package org-superstar
+  :after (org)
+  :hook (org-mode . org-superstar-mode)
+  :custom (org-superstar-leading-bullet ?\s))
+
+(use-package olivetti
+  :after (org)
+  :hook (org-mode . olivetti-mode)
+  :custom (olivetti-body-width 72))
+
+(use-package visual-fill-column)
 
 ;; this package was deprecated, but actually...
 ;; ... its weird hack (inserting real newlines that get ignored)
@@ -78,7 +117,7 @@
   :straight (:type built-in)
   :commands (longlines-mode))
 
-(defun toggle-fill-type ()
+(defun lf/toggle-fill-type ()
   "Switch between longlines-mode and visual-line-mode.
 Useful when visual-line-mode is slow or does not give enough details
 in undo-tree etc."

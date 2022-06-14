@@ -63,6 +63,7 @@
                      "~/.config/foot/foot.ini" t)))
   (start-process "restart-waybar" nil "killall" "-SIGUSR2" "waybar")
   (setq doom-modeline-hud night)
+  (lf/setup-org-theming)
   (set-face-attribute 'header-line nil :background (doom-color 'bg))
   (set-face-attribute 'header-line nil :height 40)
   (set-face-attribute 'org-roam-header-line nil :height 100))

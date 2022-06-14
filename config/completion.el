@@ -7,7 +7,7 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion))))
-  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-prefixes orderless-initialism)))
+  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-prefixes orderless-initialism orderless-flex)))
 
 (use-package marginalia
    :bind (:map minibuffer-local-map
@@ -35,7 +35,8 @@
 
 
 (use-package consult
-  :bind (("C-x b" . consult-buffer))
+  :bind (("C-x b" . consult-buffer)
+         ("C-x C-r" . consult-ripgrep))
   :init
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref

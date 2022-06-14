@@ -14,12 +14,7 @@
   (setq org-roam-capture-templates
         '(("d" "default" plain "%?"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
-           :unnarrowed t)
-          ("r" "bibliography reference" plain "%?"
-           :target
-           (file+head "references/${citekey}.org" "#+title: ${author} (${year}). ${title}")
-           :unnarrowed t
-           :immediate-finish t)))
+           :unnarrowed t)))
 
 
   (add-to-list 'display-buffer-alist
@@ -46,29 +41,49 @@
   (global-set-key (kbd "C-c n p")
                   #'leinfink/select-persistent-org-roam-buffer)
 
-  (get-buffer-window-list)
-  (setq org-roam-node-display-template
-        (concat "${title:*} "
-                (propertize "${tags:10}" 'face 'org-tag)))
-
   (setq org-roam-mode-sections
-      (list #'org-roam-backlinks-section
-            #'org-roam-reflinks-section
-            #'org-roam-unlinked-references-section
-            ))
+        (list #'org-roam-backlinks-section
+              #'org-roam-reflinks-section
+              #'org-roam-unlinked-references-section
+              ))
 
   (set-face-attribute 'org-roam-header-line nil :height 100)
   (add-hook 'org-roam-buffer-postrender-functions #'mixed-pitch-mode)
-  (add-hook 'org-roam-buffer-postrender-functions #'visual-line-mode)
+  ; (add-hook 'org-roam-buffer-postrender-functions #'visual-line-mode)
 
   ;; start with collapsed sections
   (add-hook 'org-roam-buffer-postrender-functions
             #'magit-section-show-level-2)
 
-  (setq org-roam-completion-everywhere t))
+  (setq org-roam-completion-everywhere t)
+
+  (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+    (let* ((count (caar (org-roam-db-query
+                         [:select (funcall count source)
+                                :from links
+                                :where (= dest $s1)
+                                :and (= type "id")]
+                         (org-roam-node-id node)))))
+      (format "%d" count)))
+
+  (setq org-roam-node-display-template
+        (concat "${title:50} "
+                (propertize "${tags:10}  " 'face 'org-tag)
+                (propertize "${backlinkscount} " 'face 'org-tag)))
+
+  (defun bms/org-roam-rg-search ()
+    "Search org-roam directory using consult-ripgrep. With live-preview.
+https://org-roam.discourse.group/t/using-consult-ripgrep-with-org-roam-for-searching-notes/1226"
+  (interactive)
+  (let ((consult-ripgrep-args "rg --null --type org --line-buffered\
+   --color=never --max-columns=500 --path-separator /\
+   --ignore-case --no-heading --line-number ."))
+    (consult-ripgrep org-roam-directory)))
+  (global-set-key (kbd "C-c n r") 'bms/org-roam-rg-search))
 
 
 (use-package org-roam-bibtex
+  :disabled t
   :after org-roam
   :custom
   (orb-roam-ref-format 'org-cite)
@@ -77,6 +92,7 @@
   (add-to-list 'orb-preformat-keywords "year"))
 
 (use-package citar
+  :straight (:host github :repo "emacs-citar/citar" :branch "main")
   :bind (("C-c b" . citar-insert-citation)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
@@ -98,7 +114,37 @@
                                    :face 'all-the-icons-orange
                                    :v-adjust 0.01) . " ")))
   (citar-symbol-separator "  ")
-  (citar-open-note-functions '(orb-citar-edit-note)))
+  ;; (citar-open-note-functions '(orb-citar-edit-note))
+  :config
+  (defun custom-citar-org-roam-format (key entry filepath)
+    "Format a note FILEPATH from KEY and ENTRY."
+    (let* ((template (citar--get-template 'note))
+           (note-meta
+            (when template
+              (citar--format-entry-no-widths
+               entry
+               template)))
+           (buffer (find-file filepath)))
+      (with-current-buffer buffer
+        ;; This just overrides other template insertion.
+        (erase-buffer)
+        (citar-org-roam-make-preamble key)
+        (insert "#+title: ")
+        (when template (insert note-meta))
+        (insert "\n")
+        )))
+
+  (setq citar-create-note-function #'custom-citar-org-roam-format)
+
+  ;; bugfix
+  (defun citar--open-notes (key entry)
+    "Open note(s) associated with KEY and ENTRY."
+    (or (seq-some
+         (lambda (opener)
+           (funcall opener key entry)) citar-open-note-functions)
+        (citar-file--open-note key entry)))
+
+  (add-to-list 'citar-templates '(note . "${author} (${year}). ${title}")))
 
 
 (use-package org-roam-ui
@@ -112,3 +158,20 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
+
+(use-package delve
+  :straight (:repo "publicimageltd/delve"
+             :host github
+             :type git)
+  :after org-roam
+  :bind
+  ;; the main entry point, offering a list of all stored collections
+  ;; and of all open Delve buffers:
+  (("<f12>" . delve))
+  :config
+  ;; set meaningful tag names for the dashboard query
+  (setq delve-dashboard-tags '("Tag1" "Tag2"))
+  ;; optionally turn on compact view as default
+  (add-hook #'delve-mode-hook #'delve-compact-view-mode)
+ ;; turn on delve-minor-mode when Org Roam file is opened:
+  (delve-global-minor-mode))
