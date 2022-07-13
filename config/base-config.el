@@ -129,3 +129,4 @@
     (fill-paragraph nil region)))
 
 (define-key global-map "\M-Q" 'unfill-paragraph)
+(global-unset-key (kbd "C-z"))

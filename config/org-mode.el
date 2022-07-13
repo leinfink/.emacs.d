@@ -14,7 +14,8 @@
          ("M-n" . org-do-demote)
          ("M-p" . org-do-promote)
          ("M-N" . org-demote-subtree)
-         ("M-P" . org-promote-subtree))
+         ("M-P" . org-promote-subtree)
+         ("C-M-<return>" . org-insert-heading))
 
   :config
   (doom-themes-org-config)
@@ -71,7 +72,7 @@
 (defun lf/setup-org-theming ()
   (setq org-hide-emphasis-markers t
         fill-column 72
-        org-hidden-keywords '(title)
+        ; org-hidden-keywords '(title)
         line-spacing 0.1
         org-pretty-entities t)
 

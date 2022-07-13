@@ -100,7 +100,7 @@ https://org-roam.discourse.group/t/using-consult-ripgrep-with-org-roam-for-searc
   :custom
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
+  ;; (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
   (citar-notes-paths (list (concat org-roam-directory "references/")))
   (citar-symbols
@@ -146,6 +146,14 @@ https://org-roam.discourse.group/t/using-consult-ripgrep-with-org-roam-for-searc
 
   (add-to-list 'citar-templates '(note . "${author} (${year}). ${title}")))
 
+(use-package oc-csl-activate
+  :after (org)
+  :straight (:host github :repo "andras-simonyi/org-cite-csl-activate")
+  :config
+  (add-hook 'org-mode-hook (lambda ()
+                             (cursor-sensor-mode 1)
+                             (org-cite-csl-activate-render-all)))
+  (setq org-cite-activate-processor 'csl-activate))
 
 (use-package org-roam-ui
   :straight

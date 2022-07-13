@@ -66,3 +66,6 @@ Taken from: https://github.com/magit/magit/issues/460 (@cpitclaudel)."
      notmuch-hello-insert-alltags
      notmuch-hello-insert-footer))
   (notmuch-show-header-line nil))
+
+(use-package pandoc-mode
+  :commands (pandoc-mode))

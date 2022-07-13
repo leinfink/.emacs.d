@@ -68,7 +68,6 @@
   (set-face-attribute 'header-line nil :height 40)
   (set-face-attribute 'org-roam-header-line nil :height 100))
 
-
 (use-package doom-modeline
   :demand t
   :hook (text-mode . (lambda () (setq doom-modeline-enable-word-count t)))

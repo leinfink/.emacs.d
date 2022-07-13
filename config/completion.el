@@ -5,7 +5,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(basic orderless))
   (completion-category-overrides '((file (styles basic partial-completion))))
   (orderless-matching-styles '(orderless-literal orderless-regexp orderless-prefixes orderless-initialism orderless-flex)))
 
